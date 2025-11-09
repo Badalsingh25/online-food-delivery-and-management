@@ -10,8 +10,9 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     name: Build Spring Boot Backend
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -20,21 +21,22 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Build backend
+      - name: Build Spring Boot project
         working-directory: backend
-        run: mvn -B -DskipTests package
+        run: mvn -B -DskipTests clean package
 
   frontend:
     runs-on: ubuntu-latest
     name: Build Angular Frontend
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '22'     # ✅ Matches your local version
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
@@ -42,6 +44,6 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Build frontend
+      - name: Build Angular project
         working-directory: frontend
         run: npm run build --if-present
