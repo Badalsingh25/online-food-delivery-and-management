@@ -9,44 +9,10 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    name: Build Spring Boot Backend
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-      - name: Build Spring Boot
-        run: mvn -B -DskipTests package
-  frontend:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: HungerExpress
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: HungerExpress/package-lock.json
-      - name: Install deps
-        run: npm ci
-      - name: Build Angular
-        run: npm run build --if-presentname: CI
-
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-
-jobs:
-  backend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -54,29 +20,28 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Build Spring Boot
-        working-directory: backend        # ✅ Added correct folder
+      - name: Build backend
+        working-directory: backend
         run: mvn -B -DskipTests package
 
   frontend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend       # ✅ Changed to your actual folder name
-
+    name: Build Angular Frontend
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Use Node 20
+      - name: Set up Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'     # ✅ Matches your local version
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json   # ✅ Fixed path
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Install deps
+      - name: Install dependencies
+        working-directory: frontend
         run: npm ci
 
-      - name: Build Angular
+      - name: Build frontend
+        working-directory: frontend
         run: npm run build --if-present
-
