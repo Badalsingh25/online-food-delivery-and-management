@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear HungerExpress Storage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .clear-all {
+            background: #e53935;
+            color: white;
+        }
+        .clear-all:hover {
+            background: #c62828;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .clear-orders {
+            background: #ff9800;
+            color: white;
+        }
+        .clear-orders:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .clear-cart {
+            background: #4caf50;
+            color: white;
+        }
+        .clear-cart:hover {
+            background: #388e3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .reload {
+            background: #2196f3;
+            color: white;
+        }
+        .reload:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            min-height: 50px;
+        }
+        .success {
+            color: #4caf50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Clear HungerExpress Storage</h1>
+        <p style="text-align: center; margin-bottom: 20px;">
+            Use this tool to clear cached data and fix display issues
+        </p>
+        
+        <button class="clear-orders" onclick="clearOrders()">
+            🛒 Clear Orders Cache
+        </button>
+        
+        <button class="clear-cart" onclick="clearCart()">
+            🛍️ Clear Cart Data
+        </button>
+        
+        <button class="clear-all" onclick="clearAll()">
+            🗑️ Clear All HungerExpress Data
+        </button>
+        
+        <button class="reload" onclick="reloadApp()">
+            🔄 Reload Application
+        </button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function showStatus(message, isSuccess = true) {
+            const status = document.getElementById('status');
+            status.innerHTML = `<span class="${isSuccess ? 'success' : ''}">${message}</span>`;
+        }
+
+        function clearOrders() {
+            localStorage.removeItem('he_orders');
+            showStatus('✅ Orders cache cleared! Visit "My Orders" page to see fresh data.');
+        }
+
+        function clearCart() {
+            localStorage.removeItem('he_cart');
+            showStatus('✅ Cart data cleared!');
+        }
+
+        function clearAll() {
+            const keys = Object.keys(localStorage).filter(key => key.startsWith('he'));
+            keys.forEach(key => localStorage.removeItem(key));
+            showStatus(`✅ All HungerExpress data cleared! (${keys.length} items removed)`);
+        }
+
+        function reloadApp() {
+            window.location.href = 'http://localhost:4200';
+        }
+
+        // Show current storage status on load
+        window.onload = function() {
+            const orders = localStorage.getItem('he_orders');
+            const cart = localStorage.getItem('he_cart');
+            const jwt = localStorage.getItem('he.jwt');
+            
+            let info = '<strong>Current Storage:</strong><br>';
+            info += orders ? `📦 Orders: ${JSON.parse(orders).length} items<br>` : '';
+            info += cart ? `🛒 Cart: ${JSON.parse(cart).length} items<br>` : '';
+            info += jwt ? '🔐 JWT Token: Present<br>' : '';
+            
+            showStatus(info || 'No cached data found', true);
+        };
+    </script>
+</body>
+</html>
