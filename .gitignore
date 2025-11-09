@@ -1,0 +1,71 @@
+# Compiled class files
+*.class
+target/
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/
+
+# Uploads directory
+uploads/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+
+# Build files
+/dist
+/.angular
+
+# Environment files - NEVER COMMIT THESE
+.env
+.env.local
+.env.production
+backend/.env
+frontend/.env
+**/.env
+
+# Database files
+*.sql.gz
+*.sql.zip
+database/backups/
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Uploads and media
+uploads/
+backend/uploads/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Docker volumes
+mysql_data/
+
+# Security
+*.key
+*.pem
+*.p12
+*.jks
